@@ -12,7 +12,13 @@ public class Main {
 		double[] tab4 = {1,21,1,0,4.4,1.6};
 		double[] tab5 = {1,1,10,4.4,0,7};
 		double[] tab6 = {6,1,1,1.6,7,0};
-		double[][] tab = {tab1,tab2,tab3,tab4,tab5,tab6};
+		double[] ttab1 = {0,1,1,1,1,1};
+		double[] ttab2 = {1,0,0.5,1,1,1};
+		double[] ttab3 = {1,0.5,0,1,1,1};
+		double[] ttab4 = {1,1,1,0,1,1};
+		double[] ttab5 = {1,1,1,1,0,1};
+		double[] ttab6 = {1,1,1,1,1,0};
+		double[][] tab = {ttab1,ttab2,ttab3,ttab4,ttab5,ttab6};
 		Graphe g = new Graphe(tab);
 		/*Routage r = new Routage(g);
 		System.out.println(r.toString());
@@ -24,3 +30,4 @@ public class Main {
 	
 	}
 }
+
