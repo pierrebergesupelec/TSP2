@@ -89,7 +89,7 @@ public class Routage {
     	Collections.swap(route,i,j);
     }
     
-   //Effectue une mutation et modifie la distance
+    //Effectue une mutation et modifie la distance
     public void twoPointsMove() {
     	int n = tailleRoute();
     	 // On choisit deux positions du parcours au hasard.
