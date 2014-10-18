@@ -39,11 +39,9 @@ public class Recuit {
     	Routage nvelleSolution = new Routage(g,solutionCourante.getRoute(),solutionCourante.getDistance());
     	// On rÃ©pÃ¨te tant que la tempÃ©rature est assez haute(j'ai mis 9950 pour faire des tests, à modifier biensur)
     	while (temperature > 1) {
-    	// Sur cette nouvelle route, on effectue une mutation Ã©lÃ©mentaire (2optMove)
-    		//GROS PROBLEME ICI : j'ajoute 2 prints pour obtenir à chaque itération les distances intermédiaires.
-    		//Les distances atteignent des valeurs gigantesques. Je suppose qu'elles s'additionnent... Code à rectifier !!!
-    	
-    	nvelleSolution.twoPointsMove();
+    	// Sur cette nouvelle route, on effectue une mutation Ã©lÃ©mentaire 
+    		
+    	nvelleSolution.twoOptMove();
 
     	// On rÃ©cupÃ¨re l'Ã©nergie (distance de parcours) des deux routes
     	double energieCourante = solutionCourante.getDistance();
@@ -64,8 +62,6 @@ public class Recuit {
     	}
     	// Lorsque l'Ã©nergie cinÃ©tique n'est plus suffisante, on s'arrÃªte et on affiche la solution trouvÃ©e
     	System.out.println("distance solution trouvÃ©e: " + meilleureRoute.getDistance());
-    	System.out.println("Tour: " + meilleureRoute);
     	return meilleureRoute.getDistance();
     }
 }
-     
