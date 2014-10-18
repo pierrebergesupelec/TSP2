@@ -36,6 +36,7 @@ public class Routage {
 		return s;
 	}
 	
+	
 	public ArrayList<Integer> getRoute(){
 		return route;
 	}
@@ -48,6 +49,13 @@ public class Routage {
 	public int tailleRoute() {
 		return route.size();
 	}
+	
+	//Determine si 2 noeuds sont voisins : cette définition prend en compte le sens
+	public boolean sontVoisins(int i,int j) {
+		int n = tailleRoute();
+		return getPreviousIndex(i, n) == j ;
+	}
+	
     
  // Renvoie une route initiale aléatoire
     public void routeInitiale() {
@@ -89,13 +97,17 @@ public class Routage {
     	Collections.swap(route,i,j);
     }
     
-    //Effectue une mutation et modifie la distance
+    //Effectue une mutation aléatoire et modifie la distance : convient seulement aux graphes symétriques 
     public void twoPointsMove() {
     	int n = tailleRoute();
-    	 // On choisit deux positions du parcours au hasard.
-        int randIndex1 = (int) (tailleRoute() * Math.random());
-        int randIndex2 = (int) (tailleRoute() * Math.random());
-        swap(randIndex1,randIndex2);
+    	int randIndex1 = 0;
+    	int randIndex2 = 0;
+    	 // On choisit deux positions différentes du parcours au hasard et on les échange
+    	while (randIndex1 == randIndex2){
+    		 randIndex1 = (int) (tailleRoute() * Math.random());
+    	     randIndex2 = (int) (tailleRoute() * Math.random());
+    	}
+       swap(randIndex1,randIndex2);
         //Repertorie les arêtes à rajouter et à supprimer pendant la mutation puis modifie distance
         if (Math.abs(randIndex1 - randIndex2) == 1) {
         	int indexMin = Math.min(randIndex1,randIndex2);
@@ -129,13 +141,38 @@ public class Routage {
         }
     }
     
+    //Effectue la mutation élémentaire aléatoire twoOptMove et modifie la distance (cf quantum_annealing_TSP)
+    public void twoOptMove() {
+    	int n = tailleRoute();
+    	int randIndex1 = 0;
+    	int randIndex2 = 0;
+    	 // On choisit deux positions différentes du parcours au hasard et on les échange. Notons que le cas c2=c1' ne change pas la route et que le cas c1=c1' n'a aucun sens.
+    	while (randIndex1 == randIndex2 || getPreviousIndex(randIndex1,n)==randIndex2){
+    		 randIndex1 = (int) (tailleRoute() * Math.random());
+    	     randIndex2 = (int) (tailleRoute() * Math.random());
+    	}
+    	int c2 = randIndex1; 
+        //Ici, d1 correspond au c1' de l'article quantum_annealing_TSP
+    	int d1 = randIndex2;
+    	//On effectue la mutation en faisant apparaître les arêtes c1->d1 et c2->d2. A noter la modification de sens entre c2 et d1
+    	swap(c2,d1);
+    	int pre = d1;
+    	int post = c2;
+    	while ( !sontVoisins(pre,post) && !sontVoisins(getNextIndex(pre,n),post) ) {
+    		pre = getNextIndex(pre,n);
+    		post = getPreviousIndex(post,n);
+    		swap(pre,post);
+    	}
+    	distance = newDistance();
+    }
+    
     //Calcule la distance d'une route
     public double newDistance(){
     	double dist = 0.;
     	int n = tailleRoute();
-    	for(int i=0; i<tailleRoute();i++){
+    	for(int i=0; i<n;i++){
     		//Rajoute la distance i -> getNextIndex(i)
-    		dist += g.longueurEntre(route.get(i).intValue(),route.get(getNextIndex(i,n)).intValue()) ;
+    		dist += g.longueurEntre(route.get(i),route.get(getNextIndex(i,n))) ;
     	}
     	return dist;
     }
